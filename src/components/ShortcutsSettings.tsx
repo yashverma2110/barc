@@ -8,6 +8,7 @@ import {
 } from './ui/dialog'
 import { Label } from './ui/label'
 import { Switch } from './ui/switch'
+import { getModifierKey } from '@/lib/utils'
 
 interface ShortcutsSettingsProps {
   open: boolean
@@ -27,6 +28,7 @@ export function ShortcutsSettings({ open, onOpenChange }: ShortcutsSettingsProps
     searchFocus: true,
     quickAction: true,
   })
+  const modifierKey = getModifierKey()
 
   // Load settings from localStorage on mount and when modal opens
   useEffect(() => {
@@ -73,7 +75,7 @@ export function ShortcutsSettings({ open, onOpenChange }: ShortcutsSettingsProps
                 Focus Search
               </Label>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Press <kbd className="px-1.5 py-0.5 text-xs bg-secondary border border-border rounded font-mono">⌘K</kbd> to focus the search bar
+                Press <kbd className="px-1.5 py-0.5 text-xs bg-secondary border border-border rounded font-mono">{modifierKey}+K</kbd> to focus the search bar
               </p>
             </div>
             <Switch
@@ -89,7 +91,7 @@ export function ShortcutsSettings({ open, onOpenChange }: ShortcutsSettingsProps
                 Quick Action
               </Label>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Press <kbd className="px-1.5 py-0.5 text-xs bg-secondary border border-border rounded font-mono">⌥T</kbd> to open URL or search
+                Press <kbd className="px-1.5 py-0.5 text-xs bg-secondary border border-border rounded font-mono">Ctrl+T</kbd> to open URL or search
               </p>
             </div>
             <Switch

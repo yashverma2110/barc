@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Search } from 'lucide-react'
 import { Input } from './ui/input'
-import { cn } from '@/lib/utils'
+import { cn, getModifierKey } from '@/lib/utils'
 import { useShortcutSettings } from './ShortcutsSettings'
 
 interface SearchBarProps {
@@ -12,6 +12,7 @@ interface SearchBarProps {
 export function SearchBar({ value, onChange }: SearchBarProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const settings = useShortcutSettings()
+  const modifierKey = getModifierKey()
 
   useEffect(() => {
     if (!settings.searchFocus) return
@@ -48,7 +49,7 @@ export function SearchBar({ value, onChange }: SearchBarProps) {
       />
       {settings.searchFocus && (
         <kbd className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none px-2 py-1 text-xs bg-muted border border-border rounded font-mono text-muted-foreground">
-          ⌘K
+          {modifierKey}+K
         </kbd>
       )}
     </div>

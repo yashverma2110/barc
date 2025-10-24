@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Plus, Settings, Moon, Keyboard } from 'lucide-react'
 import { Button } from './ui/button'
-import { ShortcutsSettings } from './ShortcutsSettings'
+import { ShortcutsSettings, useShortcutSettings } from './ShortcutsSettings'
+import { getModifierKey } from '@/lib/utils'
 
 interface ActionCenterProps {
   onNewTab: () => void
@@ -11,6 +12,8 @@ interface ActionCenterProps {
 
 export function ActionCenter({ onNewTab, onSettings, onTheme }: ActionCenterProps) {
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
+  const shortcutSettings = useShortcutSettings()
+  const modifierKey = getModifierKey()
 
   return (
     <>
@@ -18,11 +21,18 @@ export function ActionCenter({ onNewTab, onSettings, onTheme }: ActionCenterProp
         {/* Full-width New Tab button */}
         <Button
           variant="outline"
-          className="w-full justify-start gap-2 bg-secondary/50 hover:bg-secondary border-border"
+          className="w-full justify-between gap-2 bg-secondary/50 hover:bg-secondary border-border"
           onClick={onNewTab}
         >
-          <Plus size={16} />
-          <span>New Tab</span>
+          <div className="flex items-center gap-2">
+            <Plus size={16} />
+            <span>New Tab</span>
+          </div>
+          {shortcutSettings.quickAction && (
+            <kbd className="px-1.5 py-0.5 text-xs bg-background/50 border border-border rounded font-mono text-muted-foreground">
+              {modifierKey}+T
+            </kbd>
+          )}
         </Button>
 
         {/* Settings, Shortcuts, and Theme in a row */}

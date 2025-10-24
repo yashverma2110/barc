@@ -1,7 +1,7 @@
-import { X, Sun, Moon, Monitor, Plus, Trash2, ExternalLink, type LucideIcon } from 'lucide-react'
+import { X, Sun, Moon, Monitor, Plus, Trash2, ExternalLink, Palette, type LucideIcon } from 'lucide-react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { useTheme, type CustomTheme } from './providers/ThemeProvider'
+import { useTheme, type CustomTheme, PREDEFINED_THEMES } from './providers/ThemeProvider'
 import {
   Select,
   SelectContent,
@@ -21,6 +21,7 @@ import {
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { Textarea } from './ui/textarea'
+import { Separator } from './ui/separator'
 
 interface ThemeOption {
   value: string
@@ -28,6 +29,7 @@ interface ThemeOption {
   icon: LucideIcon
   description: string
   isCustom?: boolean
+  isPredefined?: boolean
 }
 
 interface ThemeSettingsProps {
@@ -48,8 +50,17 @@ export function ThemeSettings({ onClose }: ThemeSettingsProps) {
     { value: 'system', label: 'System', icon: Monitor, description: 'Follows your OS preference' }
   ]
 
+  const predefinedThemes: ThemeOption[] = PREDEFINED_THEMES.map(theme => ({
+    value: theme.id,
+    label: theme.name,
+    icon: Palette,
+    description: `${theme.isDark ? 'Dark' : 'Light'} theme`,
+    isPredefined: true
+  }))
+
   const allThemes: ThemeOption[] = [
     ...defaultThemes,
+    ...predefinedThemes,
     ...customThemes.map(ct => ({
       value: ct.id,
       label: ct.name,
@@ -158,7 +169,8 @@ export function ThemeSettings({ onClose }: ThemeSettingsProps) {
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {allThemes.map((themeOption) => (
+                    {/* Default themes */}
+                    {defaultThemes.map((themeOption) => (
                       <SelectItem
                         key={themeOption.value}
                         value={themeOption.value}
@@ -173,18 +185,77 @@ export function ThemeSettings({ onClose }: ThemeSettingsProps) {
                             </span>
                           </div>
                         </div>
-                        {themeOption.isCustom && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-6 w-6 ml-2"
-                            onClick={(e) => handleRemoveTheme(themeOption.value, e)}
-                          >
-                            <Trash2 size={14} />
-                          </Button>
-                        )}
                       </SelectItem>
                     ))}
+
+                    {/* Predefined themes separator and items */}
+                    {predefinedThemes.length > 0 && (
+                      <>
+                        <Separator className="my-1" />
+                        <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                          Pre-made Themes
+                        </div>
+                        {predefinedThemes.map((themeOption) => (
+                          <SelectItem
+                            key={themeOption.value}
+                            value={themeOption.value}
+                            className="flex items-center justify-between"
+                          >
+                            <div className="flex items-center gap-2 flex-1">
+                              <themeOption.icon size={16} />
+                              <div className="flex flex-col">
+                                <span className="font-medium text-sm">{themeOption.label}</span>
+                                <span className="text-xs text-muted-foreground">
+                                  {themeOption.description}
+                                </span>
+                              </div>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </>
+                    )}
+
+                    {/* Custom themes separator and items */}
+                    {customThemes.length > 0 && (
+                      <>
+                        <Separator className="my-1" />
+                        <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                          Custom Themes
+                        </div>
+                        {customThemes.map((ct) => {
+                          const Icon = ct.isDark ? Moon : Sun
+                          return (
+                            <div key={ct.id} className="relative">
+                              <SelectItem
+                                value={ct.id}
+                                className="pr-10"
+                              >
+                                <div className="flex items-center gap-2">
+                                  <Icon size={16} />
+                                  <div className="flex flex-col">
+                                    <span className="font-medium text-sm">{ct.name}</span>
+                                    <span className="text-xs text-muted-foreground">
+                                      Custom theme
+                                    </span>
+                                  </div>
+                                </div>
+                              </SelectItem>
+                              <button
+                                className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 flex items-center justify-center rounded-sm bg-muted/50 hover:bg-destructive/10 transition-colors z-10"
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                  handleRemoveTheme(ct.id, e)
+                                }}
+                                title="Delete theme"
+                              >
+                                <Trash2 size={14} className="text-muted-foreground hover:text-destructive transition-colors" />
+                              </button>
+                            </div>
+                          )
+                        })}
+                      </>
+                    )}
                   </SelectContent>
                 </Select>
                 <Button
