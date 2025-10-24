@@ -27,9 +27,9 @@ export function PinnedUrlGrid({ pinnedUrls, gridSettings, onOpenUrl, onRemoveUrl
         {pinnedUrls.map((pinnedUrl) => (
           <div
             key={pinnedUrl.id}
-            className="pinned-url-item"
+            className={`pinned-url-item ${pinnedUrl.isActive ? 'is-open' : ''}`}
             onClick={() => onOpenUrl(pinnedUrl.url)}
-            title={pinnedUrl.title}
+            title={pinnedUrl.isActive ? `${pinnedUrl.title} (Active)` : pinnedUrl.title}
           >
             <div className="pinned-url-icon" style={{ width: iconSize.icon, height: iconSize.icon }}>
               {pinnedUrl.favicon ? (

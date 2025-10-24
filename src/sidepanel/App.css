@@ -80,6 +80,17 @@
   transform: scale(1.05);
 }
 
+.pinned-url-item.is-open {
+  background-color: #0a84ff;
+  border: 2px solid #0a84ff;
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
+}
+
+.pinned-url-item.is-open:hover {
+  background-color: #0070e0;
+  transform: scale(1.05);
+}
+
 .pinned-url-item.add-pinned {
   background-color: #2c2c2e;
   border: 1px dashed #3a3a3c;

@@ -171,7 +171,18 @@ export function useTabs() {
   // Open URL in new or existing tab
   const openUrl = async (url: string) => {
     try {
-      await chrome.tabs.create({ url, active: true })
+      const normalizedUrl = normalizeUrl(url)
+
+      // Check if a tab with this URL already exists
+      const existingTab = tabs.find((tab) => normalizeUrl(tab.url) === normalizedUrl)
+
+      if (existingTab) {
+        // Switch to existing tab instead of creating a new one
+        await switchToTab(existingTab.id)
+      } else {
+        // Create new tab if it doesn't exist
+        await chrome.tabs.create({ url, active: true })
+      }
     } catch (error) {
       console.error('Error opening URL:', error)
     }
@@ -211,16 +222,42 @@ export function useTabs() {
     }
   }
 
-  // Separate pinned and unpinned tabs
-  const pinnedTabs = filteredTabs.filter((tab) => pinnedTabIds.includes(tab.id))
-  const unpinnedTabs = filteredTabs.filter((tab) => !pinnedTabIds.includes(tab.id))
+  // Normalize URL for comparison (remove trailing slashes, fragments, etc.)
+  const normalizeUrl = (url: string) => {
+    try {
+      const urlObj = new URL(url)
+      return `${urlObj.protocol}//${urlObj.host}${urlObj.pathname}`.replace(/\/$/, '')
+    } catch {
+      return url.replace(/\/$/, '')
+    }
+  }
+
+  // Find the active tab's URL
+  const activeTab = tabs.find((tab) => tab.active)
+  const activeTabUrl = activeTab ? normalizeUrl(activeTab.url) : null
+
+  // Mark which pinned URLs match the currently active tab
+  const pinnedUrlsWithActiveStatus = pinnedUrls.map((pinnedUrl) => ({
+    ...pinnedUrl,
+    isActive: activeTabUrl ? normalizeUrl(pinnedUrl.url) === activeTabUrl : false,
+  }))
+
+  // Create a set of pinned URL strings for filtering
+  const pinnedUrlStrings = new Set(pinnedUrls.map((url) => normalizeUrl(url.url)))
+
+  // Filter out tabs that match pinned URLs
+  const tabsExcludingPinnedUrls = filteredTabs.filter((tab) => !pinnedUrlStrings.has(normalizeUrl(tab.url)))
+
+  // Separate pinned and unpinned tabs (excluding those matching pinned URLs)
+  const pinnedTabs = tabsExcludingPinnedUrls.filter((tab) => pinnedTabIds.includes(tab.id))
+  const unpinnedTabs = tabsExcludingPinnedUrls.filter((tab) => !pinnedTabIds.includes(tab.id))
 
   return {
     tabs: filteredTabs,
     pinnedTabs,
     unpinnedTabs,
     customGroups,
-    pinnedUrls,
+    pinnedUrls: pinnedUrlsWithActiveStatus,
     gridSettings,
     searchQuery,
     loading,

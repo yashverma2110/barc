@@ -22,6 +22,7 @@ export interface PinnedUrl {
   url: string
   title: string
   favicon?: string
+  isActive?: boolean
 }
 
 export interface GridSettings {
