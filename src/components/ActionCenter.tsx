@@ -1,30 +1,44 @@
-import { Plus, Settings } from 'lucide-react'
+import { Plus, Settings, Moon } from 'lucide-react'
 import { Button } from './ui/button'
 
-interface ActionButton {
-  icon: React.ReactNode
-  label: string
-  onClick: () => void
-}
-
 interface ActionCenterProps {
-  actions: ActionButton[]
+  onNewTab: () => void
+  onSettings: () => void
+  onTheme: () => void
 }
 
-export function ActionCenter({ actions }: ActionCenterProps) {
+export function ActionCenter({ onNewTab, onSettings, onTheme }: ActionCenterProps) {
   return (
-    <div className="mt-auto flex flex-col gap-2">
-      {actions.map((action, index) => (
+    <div className="flex flex-col gap-2">
+      {/* Full-width New Tab button */}
+      <Button
+        variant="outline"
+        className="w-full justify-start gap-2 bg-secondary/50 hover:bg-secondary border-border"
+        onClick={onNewTab}
+      >
+        <Plus size={16} />
+        <span>New Tab</span>
+      </Button>
+
+      {/* Settings and Theme in a row */}
+      <div className="flex gap-2">
         <Button
-          key={index}
           variant="outline"
-          className="w-full justify-start gap-2 bg-secondary/50 hover:bg-secondary border-border"
-          onClick={action.onClick}
+          size="icon"
+          className="flex-1 bg-secondary/50 hover:bg-secondary border-border"
+          onClick={onSettings}
         >
-          {action.icon}
-          <span>{action.label}</span>
+          <Settings size={18} />
         </Button>
-      ))}
+        <Button
+          variant="outline"
+          size="icon"
+          className="flex-1 bg-secondary/50 hover:bg-secondary border-border"
+          onClick={onTheme}
+        >
+          <Moon size={18} />
+        </Button>
+      </div>
     </div>
   )
 }

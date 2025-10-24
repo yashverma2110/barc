@@ -1,4 +1,3 @@
-import { Plus, Settings as SettingsIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useTabs } from '../hooks/useTabs'
 import { SearchBar } from '../components/SearchBar'
@@ -6,6 +5,7 @@ import { TabItem } from '../components/TabItem'
 import { PinnedUrlGrid } from '../components/PinnedUrlGrid'
 import { ActionCenter } from '../components/ActionCenter'
 import { Settings } from '../components/Settings'
+import { ThemeSettings } from '../components/ThemeSettings'
 import './App.css'
 
 export default function App() {
@@ -29,6 +29,7 @@ export default function App() {
 
   const [notification, setNotification] = useState<string | null>(null)
   const [showSettings, setShowSettings] = useState(false)
+  const [showThemeSettings, setShowThemeSettings] = useState(false)
 
   const handleAddUrl = async () => {
     const success = await pinCurrentTab()
@@ -46,19 +47,6 @@ export default function App() {
     )
   }
 
-  const actionButtons = [
-    {
-      icon: <Plus size={16} />,
-      label: 'New Tab',
-      onClick: createNewTab,
-    },
-    {
-      icon: <SettingsIcon size={16} />,
-      label: 'Settings',
-      onClick: () => setShowSettings(true),
-    },
-  ]
-
   return (
     <div className="flex flex-col h-screen w-full bg-background text-foreground p-3 overflow-y-auto">
       {notification && (
@@ -73,6 +61,10 @@ export default function App() {
           onUpdateSettings={updateGridSettings}
           onClose={() => setShowSettings(false)}
         />
+      )}
+
+      {showThemeSettings && (
+        <ThemeSettings onClose={() => setShowThemeSettings(false)} />
       )}
 
       <PinnedUrlGrid
@@ -123,7 +115,13 @@ export default function App() {
         </div>
       </div>
 
-      <ActionCenter actions={actionButtons} />
+      <div className="mt-auto">
+        <ActionCenter
+          onNewTab={createNewTab}
+          onSettings={() => setShowSettings(true)}
+          onTheme={() => setShowThemeSettings(true)}
+        />
+      </div>
     </div>
   )
 }
