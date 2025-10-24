@@ -148,7 +148,7 @@ export function ThemeSettings({ onClose }: ThemeSettingsProps) {
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 -mr-2 hover:bg-secondary"
+              className="h-8 w-8 -mr-2"
               onClick={onClose}
             >
               <X size={16} />
@@ -272,13 +272,14 @@ export function ThemeSettings({ onClose }: ThemeSettingsProps) {
             <div className="pt-2 border-t">
               <p className="text-xs text-muted-foreground">
                 Create custom themes at{' '}
-                <button
+                <Button
+                  variant="link"
+                  size="sm"
                   onClick={handleOpenTweakcn}
-                  className="text-primary hover:underline inline-flex items-center gap-1"
                 >
                   tweakcn.com
-                  <ExternalLink size={12} />
-                </button>
+                  <ExternalLink size={12} className="text-primary" />
+                </Button>
               </p>
             </div>
           </CardContent>

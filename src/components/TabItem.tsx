@@ -68,8 +68,9 @@ export function TabItem({ tab, isPinned, onSwitch, onClose, onTogglePin }: TabIt
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
+                variant="ghost"
                 size="icon"
-                className="h-6 w-6 hover:bg-accent hover:text-accent-foreground"
+                className="h-6 w-6"
                 onClick={handlePin}
               >
                 {isPinned ? <Pin size={14} className="text-foreground" /> : <PinOff size={14} className="text-foreground" />}
@@ -83,8 +84,9 @@ export function TabItem({ tab, isPinned, onSwitch, onClose, onTogglePin }: TabIt
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
+                variant="ghost"
                 size="icon"
-                className="h-6 w-6 hover:bg-destructive/10 hover:text-destructive"
+                className="h-6 w-6"
                 onClick={handleClose}
               >
                 <X size={14} className="text-foreground" />
