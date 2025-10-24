@@ -5,6 +5,7 @@ export default defineManifest({
   manifest_version: 3,
   name: pkg.name,
   version: pkg.version,
+  description: 'A beautiful Chrome extension that brings Arc browser-style tab management to any browser. Organize tabs with pinned URLs, custom themes, and powerful search.',
   icons: {
     48: 'public/logo.png',
   },
