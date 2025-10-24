@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { Globe, Pin, PinOff, X } from 'lucide-react'
 import type { TabItem as TabItemType } from '../types/tab'
 import { Button } from './ui/button'
@@ -13,6 +14,8 @@ interface TabItemProps {
 }
 
 export function TabItem({ tab, isPinned, onSwitch, onClose, onTogglePin }: TabItemProps) {
+  const [faviconError, setFaviconError] = React.useState(false)
+
   const handleClick = () => {
     onSwitch(tab.id)
   }
@@ -38,8 +41,13 @@ export function TabItem({ tab, isPinned, onSwitch, onClose, onTogglePin }: TabIt
         onClick={handleClick}
       >
         <div className="flex-shrink-0 w-4 h-4 flex items-center justify-center">
-          {tab.favIconUrl ? (
-            <img src={tab.favIconUrl} alt="" className="w-4 h-4 rounded-sm" />
+          {tab.favIconUrl && !faviconError ? (
+            <img
+              src={tab.favIconUrl}
+              alt=""
+              className="w-4 h-4 rounded-sm"
+              onError={() => setFaviconError(true)}
+            />
           ) : (
             <Globe size={16} className="text-muted-foreground" />
           )}
