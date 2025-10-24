@@ -40,8 +40,8 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="sidebar-container">
-        <div className="loading">Loading tabs...</div>
+      <div className="flex items-center justify-center h-screen bg-background text-muted-foreground text-sm">
+        Loading tabs...
       </div>
     )
   }
@@ -60,8 +60,12 @@ export default function App() {
   ]
 
   return (
-    <div className="sidebar-container">
-      {notification && <div className="notification">{notification}</div>}
+    <div className="flex flex-col h-screen w-full bg-background text-foreground p-3 overflow-y-auto">
+      {notification && (
+        <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-medium shadow-lg animate-in slide-in-from-top-2">
+          {notification}
+        </div>
+      )}
 
       {showSettings && (
         <Settings
@@ -82,9 +86,11 @@ export default function App() {
       <SearchBar value={searchQuery} onChange={setSearchQuery} />
 
       {pinnedTabs.length > 0 && (
-        <div className="tab-section">
-          <div className="section-header">Pinned</div>
-          <div className="tab-list">
+        <div className="mb-6">
+          <div className="text-xs font-semibold uppercase text-muted-foreground tracking-wider mb-2 px-2">
+            Pinned
+          </div>
+          <div className="flex flex-col gap-1">
             {pinnedTabs.map((tab) => (
               <TabItem
                 key={tab.id}
@@ -99,9 +105,11 @@ export default function App() {
         </div>
       )}
 
-      <div className="tab-section">
-        <div className="section-header">All Tabs</div>
-        <div className="tab-list">
+      <div className="mb-6 flex-1">
+        <div className="text-xs font-semibold uppercase text-muted-foreground tracking-wider mb-2 px-2">
+          All Tabs
+        </div>
+        <div className="flex flex-col gap-1">
           {unpinnedTabs.map((tab) => (
             <TabItem
               key={tab.id}
