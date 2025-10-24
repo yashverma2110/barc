@@ -7,11 +7,17 @@ export default defineManifest({
   version: pkg.version,
   description: 'A beautiful Chrome extension that brings Arc browser-style tab management to any browser. Organize tabs with pinned URLs, custom themes, and powerful search.',
   icons: {
-    48: 'public/logo.png',
+    16: 'public/icon16.png',
+    32: 'public/icon32.png',
+    48: 'public/icon48.png',
+    128: 'public/icon128.png',
   },
   action: {
     default_icon: {
-      48: 'public/logo.png',
+      16: 'public/icon16.png',
+      32: 'public/icon32.png',
+      48: 'public/icon48.png',
+      128: 'public/icon128.png',
     },
   },
   background: {
