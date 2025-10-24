@@ -1,4 +1,5 @@
 import { Plus, Settings } from 'lucide-react'
+import { Button } from './ui/button'
 
 interface ActionButton {
   icon: React.ReactNode
@@ -12,12 +13,17 @@ interface ActionCenterProps {
 
 export function ActionCenter({ actions }: ActionCenterProps) {
   return (
-    <div className="action-center">
+    <div className="mt-auto flex flex-col gap-2">
       {actions.map((action, index) => (
-        <button key={index} className="action-button" onClick={action.onClick}>
+        <Button
+          key={index}
+          variant="outline"
+          className="w-full justify-start gap-2 bg-secondary/50 hover:bg-secondary border-border"
+          onClick={action.onClick}
+        >
           {action.icon}
           <span>{action.label}</span>
-        </button>
+        </Button>
       ))}
     </div>
   )

@@ -1,5 +1,7 @@
 import { X } from 'lucide-react'
 import type { GridSettings } from '../types/tab'
+import { Button } from './ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 
 interface SettingsProps {
   settings: GridSettings
@@ -17,65 +19,92 @@ export function Settings({ settings, onUpdateSettings, onClose }: SettingsProps)
   }
 
   return (
-    <div className="settings-overlay" onClick={onClose}>
-      <div className="settings-panel" onClick={(e) => e.stopPropagation()}>
-        <div className="settings-header">
-          <h3>Grid Settings</h3>
-          <button className="settings-close" onClick={onClose}>
+    <div
+      className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <Card
+        className="w-full max-w-sm animate-in fade-in-0 zoom-in-95"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+          <CardTitle className="text-base font-semibold">Grid Settings</CardTitle>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={onClose}
+          >
             <X size={18} />
-          </button>
-        </div>
+          </Button>
+        </CardHeader>
 
-        <div className="settings-content">
-          <div className="settings-section">
-            <label className="settings-label">Icon Size</label>
-            <div className="settings-options">
-              <button
-                className={`settings-option ${settings.iconSize === 'small' ? 'active' : ''}`}
+        <CardContent className="space-y-6">
+          <div className="space-y-3">
+            <label className="text-xs font-semibold uppercase text-muted-foreground tracking-wider">
+              Icon Size
+            </label>
+            <div className="flex gap-2">
+              <Button
+                variant={settings.iconSize === 'small' ? 'default' : 'outline'}
+                size="sm"
+                className="flex-1"
                 onClick={() => handleIconSizeChange('small')}
               >
                 Small
-              </button>
-              <button
-                className={`settings-option ${settings.iconSize === 'medium' ? 'active' : ''}`}
+              </Button>
+              <Button
+                variant={settings.iconSize === 'medium' ? 'default' : 'outline'}
+                size="sm"
+                className="flex-1"
                 onClick={() => handleIconSizeChange('medium')}
               >
                 Medium
-              </button>
-              <button
-                className={`settings-option ${settings.iconSize === 'large' ? 'active' : ''}`}
+              </Button>
+              <Button
+                variant={settings.iconSize === 'large' ? 'default' : 'outline'}
+                size="sm"
+                className="flex-1"
                 onClick={() => handleIconSizeChange('large')}
               >
                 Large
-              </button>
+              </Button>
             </div>
           </div>
 
-          <div className="settings-section">
-            <label className="settings-label">Columns</label>
-            <div className="settings-options">
-              <button
-                className={`settings-option ${settings.columns === 2 ? 'active' : ''}`}
+          <div className="space-y-3">
+            <label className="text-xs font-semibold uppercase text-muted-foreground tracking-wider">
+              Columns
+            </label>
+            <div className="flex gap-2">
+              <Button
+                variant={settings.columns === 2 ? 'default' : 'outline'}
+                size="sm"
+                className="flex-1"
                 onClick={() => handleColumnsChange(2)}
               >
                 2
-              </button>
-              <button
-                className={`settings-option ${settings.columns === 3 ? 'active' : ''}`}
+              </Button>
+              <Button
+                variant={settings.columns === 3 ? 'default' : 'outline'}
+                size="sm"
+                className="flex-1"
                 onClick={() => handleColumnsChange(3)}
               >
                 3
-              </button>
-              <button
-                className={`settings-option ${settings.columns === 4 ? 'active' : ''}`}
+              </Button>
+              <Button
+                variant={settings.columns === 4 ? 'default' : 'outline'}
+                size="sm"
+                className="flex-1"
                 onClick={() => handleColumnsChange(4)}
               >
                 4
-              </button>
+              </Button>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

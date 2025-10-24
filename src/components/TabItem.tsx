@@ -1,5 +1,8 @@
 import { Globe, Pin, PinOff, X } from 'lucide-react'
 import type { TabItem as TabItemType } from '../types/tab'
+import { Button } from './ui/button'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip'
+import { cn } from '@/lib/utils'
 
 interface TabItemProps {
   tab: TabItemType
@@ -25,31 +28,68 @@ export function TabItem({ tab, isPinned, onSwitch, onClose, onTogglePin }: TabIt
   }
 
   return (
-    <div
-      className={`tab-item ${tab.active ? 'active' : ''}`}
-      onClick={handleClick}
-      title={tab.title}
-    >
-      <div className="tab-favicon">
-        {tab.favIconUrl ? (
-          <img src={tab.favIconUrl} alt="" width={16} height={16} />
-        ) : (
-          <Globe size={16} className="favicon-icon" />
+    <TooltipProvider>
+      <div
+        className={cn(
+          'group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer transition-colors',
+          'hover:bg-secondary/80',
+          tab.active && 'bg-secondary'
         )}
+        onClick={handleClick}
+      >
+        <div className="flex-shrink-0 w-4 h-4 flex items-center justify-center">
+          {tab.favIconUrl ? (
+            <img src={tab.favIconUrl} alt="" className="w-4 h-4 rounded-sm" />
+          ) : (
+            <Globe size={16} className="text-muted-foreground" />
+          )}
+        </div>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="flex-1 text-sm text-foreground truncate text-left">
+              {tab.title}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">
+            <p className="max-w-xs truncate">{tab.title}</p>
+          </TooltipContent>
+        </Tooltip>
+
+        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6"
+                onClick={handlePin}
+              >
+                {isPinned ? <Pin size={14} /> : <PinOff size={14} />}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>{isPinned ? 'Unpin tab' : 'Pin tab'}</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 hover:bg-destructive/10 hover:text-destructive"
+                onClick={handleClose}
+              >
+                <X size={14} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>Close tab</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </div>
-      <div className="tab-title">{tab.title}</div>
-      <div className="tab-actions">
-        <button
-          className="tab-pin-button"
-          onClick={handlePin}
-          title={isPinned ? 'Unpin tab' : 'Pin tab'}
-        >
-          {isPinned ? <Pin size={14} /> : <PinOff size={14} />}
-        </button>
-        <button className="tab-close-button" onClick={handleClose} title="Close tab">
-          <X size={14} />
-        </button>
-      </div>
-    </div>
+    </TooltipProvider>
   )
 }
