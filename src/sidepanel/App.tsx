@@ -87,7 +87,7 @@ export default function App() {
   }
 
   return (
-    <div className="flex flex-col h-screen w-full bg-background text-foreground p-3 overflow-y-auto">
+    <div className="flex flex-col h-screen w-full bg-background text-foreground overflow-hidden">
       {notification && (
         <div className="fixed top-3 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-medium shadow-lg animate-in slide-in-from-top-2">
           {notification}
@@ -112,27 +112,52 @@ export default function App() {
         onSubmit={handleCommandSubmit}
       />
 
-      <PinnedUrlGrid
-        pinnedUrls={pinnedUrls}
-        gridSettings={gridSettings}
-        onOpenUrl={openUrl}
-        onRemoveUrl={removePinnedUrl}
-        onAddUrl={handleAddUrl}
-      />
+      {/* Fixed Header Section - Pinned URLs */}
+      <div className="flex-shrink-0 p-3 pb-0">
+        <PinnedUrlGrid
+          pinnedUrls={pinnedUrls}
+          gridSettings={gridSettings}
+          onOpenUrl={openUrl}
+          onRemoveUrl={removePinnedUrl}
+          onAddUrl={handleAddUrl}
+        />
 
-      <SearchBar value={searchQuery} onChange={setSearchQuery} />
+        <SearchBar value={searchQuery} onChange={setSearchQuery} />
+      </div>
 
-      {pinnedTabs.length > 0 && (
+      {/* Scrollable Tabs Section */}
+      <div className="flex-1 overflow-y-auto px-3 py-3">
+        {pinnedTabs.length > 0 && (
+          <div className="mb-6">
+            <div className="text-xs font-semibold uppercase text-muted-foreground tracking-wider mb-2 px-2">
+              Pinned
+            </div>
+            <div className="flex flex-col gap-1">
+              {pinnedTabs.map((tab) => (
+                <TabItem
+                  key={tab.id}
+                  tab={tab}
+                  isPinned={true}
+                  onSwitch={switchToTab}
+                  onClose={closeTab}
+                  onTogglePin={togglePin}
+                  onRename={renameTab}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="mb-6">
           <div className="text-xs font-semibold uppercase text-muted-foreground tracking-wider mb-2 px-2">
-            Pinned
+            All Tabs
           </div>
           <div className="flex flex-col gap-1">
-            {pinnedTabs.map((tab) => (
+            {unpinnedTabs.map((tab) => (
               <TabItem
                 key={tab.id}
                 tab={tab}
-                isPinned={true}
+                isPinned={false}
                 onSwitch={switchToTab}
                 onClose={closeTab}
                 onTogglePin={togglePin}
@@ -141,28 +166,10 @@ export default function App() {
             ))}
           </div>
         </div>
-      )}
-
-      <div className="mb-6 flex-1">
-        <div className="text-xs font-semibold uppercase text-muted-foreground tracking-wider mb-2 px-2">
-          All Tabs
-        </div>
-        <div className="flex flex-col gap-1">
-          {unpinnedTabs.map((tab) => (
-            <TabItem
-              key={tab.id}
-              tab={tab}
-              isPinned={false}
-              onSwitch={switchToTab}
-              onClose={closeTab}
-              onTogglePin={togglePin}
-              onRename={renameTab}
-            />
-          ))}
-        </div>
       </div>
 
-      <div className="mt-auto">
+      {/* Fixed Footer Section - Action Center */}
+      <div className="flex-shrink-0 p-3 border-t border-border/50 bg-background">
         <ActionCenter
           onNewTab={createNewTab}
           onSettings={() => setShowSettings(true)}
