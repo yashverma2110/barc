@@ -1,109 +1,120 @@
-# 🌟 Barc
+# Barc
 
-> A beautiful, feature-rich Chrome extension for managing tabs with style
+**A modern Chrome extension for elegant tab management**
 
-Barc is a modern Chrome extension that transforms your tab management experience with a sleek side panel interface. Inspired by Arc browser's elegant design philosophy, Barc brings the same refined user experience to any Chromium-based browser, enabling seamless exploration of new AI-powered browsers without compromising on familiar, intuitive tab management.
+<p align="left">
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react&logoColor=white" alt="React 19">
+  <img src="https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat&logo=typescript&logoColor=white" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Vite-7.0-646CFF?style=flat&logo=vite&logoColor=white" alt="Vite">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=flat&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=flat" alt="MIT License">
+</p>
 
-Built with React 19, TypeScript, and Tailwind CSS, it offers powerful features like pinned URLs, customizable themes, keyboard shortcuts, and more.
+Barc transforms your tab management experience with a sleek side panel interface. Inspired by Arc browser's elegant design philosophy, Barc brings the same refined user experience to any Chromium-based browser, enabling seamless exploration of new AI-powered browsers without compromising on familiar, intuitive tab management.
 
-## ✨ Features
+---
 
-### 🎯 Core Features
-- **📌 Pinned URLs Grid** - Quick access to your favorite websites with customizable grid layouts
-- **🔍 Instant Search** - Search through all your open tabs with lightning-fast filtering
-- **⚡ Smart Tab Management** - Pin/unpin tabs, switch between tabs, and close tabs with ease
-- **📋 Command Palette** - Quick access to URLs and search with `Ctrl+T` (or `Cmd+T` on Mac)
+## Features
 
-### 🎨 Customization
-- **🌈 Theme System**
+### Core Functionality
+- **Pinned URLs Grid** — Quick access to your favorite websites with customizable grid layouts
+- **Instant Search** — Search through all your open tabs with lightning-fast filtering
+- **Smart Tab Management** — Pin/unpin tabs, switch between tabs, and close tabs with ease
+- **Command Palette** — Quick access to URLs and search with keyboard shortcuts
+
+### Customization
+- **Theme System**
   - Light, Dark, and System themes
-  - 8 beautiful pre-made themes (Zinc, Slate, Rose, Blue, Green, Orange, Violet, Yellow)
+  - 8 pre-made themes: Zinc, Slate, Rose, Blue, Green, Orange, Violet, Yellow
   - Import custom themes from [tweakcn.com](https://tweakcn.com)
   - Create and save your own custom themes
-- **🔧 Grid Settings** - Adjust pinned URLs grid columns and row height
-- **⌨️ Keyboard Shortcuts** - Customizable shortcuts for power users
-  - `Cmd+K` / `Ctrl+K` - Focus search bar
-  - `Ctrl+T` / `Cmd+T` - Open command palette
+- **Grid Settings** — Adjust pinned URLs grid columns and row height
+- **Keyboard Shortcuts** — Customizable shortcuts for power users
+  - `Cmd+K` / `Ctrl+K` to focus search bar
+  - `Ctrl+T` / `Cmd+T` to open command palette
 
-### 💡 Additional Features
-- **🌙 Dark Mode** - Seamless dark mode support across all themes
-- **📱 Side Panel UI** - Modern Chrome side panel interface
-- **💾 Persistent Storage** - All settings, themes, and pinned URLs are saved locally
-- **🎯 Context Actions** - Right-click menu on tabs for quick actions
-- **🔄 Real-time Updates** - Tabs update automatically when you open/close them
+### Additional Capabilities
+- Dark mode support across all themes
+- Modern Chrome side panel interface
+- Persistent local storage for all settings, themes, and pinned URLs
+- Context actions via right-click menu
+- Real-time tab updates
 
-## 🚀 Quick Start
+---
+
+## Getting Started
 
 ### Prerequisites
-- Node.js 18+ and npm
-- Chrome browser (version 114+)
+- Node.js 18 or higher
+- Chrome browser (version 114 or higher)
 
 ### Installation
 
-1. **Clone the repository**
+Clone the repository and install dependencies:
+
 ```bash
 git clone https://github.com/yourusername/barc.git
 cd barc
-```
-
-2. **Install dependencies**
-```bash
 npm install
 ```
 
-3. **Start development server**
+Start the development server:
+
 ```bash
 npm run dev
 ```
 
-4. **Load in Chrome**
-   - Open Chrome and navigate to `chrome://extensions/`
-   - Enable **Developer mode** (toggle in top right)
-   - Click **Load unpacked**
-   - Select the `dist` directory from the project
+Load the extension in Chrome:
+1. Navigate to `chrome://extensions/`
+2. Enable Developer mode (toggle in top right)
+3. Click Load unpacked
+4. Select the `dist` directory from the project
 
-5. **Open the side panel**
-   - Click the Barc icon in your Chrome toolbar
-   - The extension will open in Chrome's side panel
+The extension will open in Chrome's side panel when you click the Barc icon in your toolbar.
 
-### Production Build
+### Building for Production
 
 ```bash
 npm run build
 ```
 
-The production build will be created in the `dist` directory and a zip file will be generated in the `release` directory.
+The production build will be created in the `dist` directory with a zip file in the `release` directory.
 
-## 🎨 Themes
+---
 
-Barc comes with 8 beautiful pre-made themes inspired by popular shadcn/ui color schemes:
+## Themes
 
-### Dark Themes
-- **Zinc** - Clean monochrome dark theme
-- **Slate** - Rich blue-tinted dark theme
-- **Violet** - Vibrant purple dark theme
+Barc includes 8 carefully crafted themes inspired by popular shadcn/ui color schemes.
 
-### Light Themes
-- **Rose** - Warm pink accent theme
-- **Blue** - Classic bright blue theme
-- **Green** - Fresh green accent theme
-- **Orange** - Energetic orange theme
-- **Yellow** - Bright and cheerful theme
+**Dark Themes**
+- Zinc — Clean monochrome aesthetic
+- Slate — Blue-tinted elegance
+- Violet — Vibrant purple accents
+
+**Light Themes**
+- Rose — Warm pink tones
+- Blue — Classic bright palette
+- Green — Fresh natural accents
+- Orange — Energetic warmth
+- Yellow — Bright optimism
 
 ### Custom Themes
 
-1. Visit [tweakcn.com](https://tweakcn.com) to create your custom theme
+Create your own themes:
+1. Visit [tweakcn.com](https://tweakcn.com) to design your theme
 2. Copy the CSS variables from the theme editor
-3. In Barc, open Theme Settings → Click the **+** button
-4. Paste your CSS variables, give it a name, and save!
+3. Open Theme Settings in Barc and click the + button
+4. Paste your CSS variables, name your theme, and save
 
-## 📁 Project Structure
+---
+
+## Architecture
 
 ```
 barc/
 ├── src/
 │   ├── sidepanel/          # Main side panel UI
-│   │   ├── App.tsx         # Main app component
+│   │   ├── App.tsx         # Main application component
 │   │   └── index.html      # Side panel entry point
 │   ├── content/            # Content scripts (injected into pages)
 │   ├── background/         # Background service worker
@@ -128,76 +139,80 @@ barc/
 └── tailwind.config.js     # Tailwind CSS configuration
 ```
 
-## 🛠️ Tech Stack
+---
 
-- **Framework**: [React 19](https://react.dev/) with TypeScript
-- **Build Tool**: [Vite](https://vitejs.dev/)
-- **Chrome Extension Plugin**: [CRXJS Vite Plugin](https://crxjs.dev/vite-plugin)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **UI Components**: [Radix UI](https://www.radix-ui.com/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Component Library**: [shadcn/ui](https://ui.shadcn.com/)
+## Technology
 
-## ⌨️ Keyboard Shortcuts
-
-| Shortcut | Action | Customizable |
-|----------|--------|--------------|
-| `Cmd+K` / `Ctrl+K` | Focus search bar | ✅ |
-| `Ctrl+T` / `Cmd+T` | Open command palette | ✅ |
-
-All shortcuts can be enabled/disabled in the Keyboard Shortcuts settings.
-
-## 🎯 Usage
-
-### Managing Tabs
-- **Switch to Tab**: Click on any tab in the list
-- **Close Tab**: Click the X icon on the tab
-- **Pin/Unpin Tab**: Click the pin icon on the tab
-
-### Pinned URLs
-- **Add Current URL**: Click the + button in the pinned URLs grid
-- **Open URL**: Click on any pinned URL card
-- **Remove URL**: Click the X icon on the pinned URL card
-- **Customize Grid**: Open Settings → Adjust columns and row height
-
-### Themes
-- **Change Theme**: Click the moon icon → Select a theme from the dropdown
-- **Add Custom Theme**: Click the + button → Import from tweakcn.com
-- **Delete Custom Theme**: Click the trash icon next to custom themes
-
-## 🤝 Contributing
-
-Contributions are welcome! Here's how you can help:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Development Guidelines
-- Use TypeScript for all new code
-- Follow the existing code style
-- Add comments for complex logic
-- Test your changes in Chrome before submitting
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [shadcn/ui](https://ui.shadcn.com/) - For the beautiful UI components
-- [tweakcn.com](https://tweakcn.com) - For the theme editor inspiration
-- [Lucide](https://lucide.dev/) - For the icon set
-- [Radix UI](https://www.radix-ui.com/) - For the accessible component primitives
-
-## 📧 Support
-
-If you have any questions or need help, feel free to:
-- Open an issue on GitHub
-- Check existing issues for solutions
+- [React 19](https://react.dev/) with TypeScript
+- [Vite](https://vitejs.dev/) for build tooling
+- [CRXJS Vite Plugin](https://crxjs.dev/vite-plugin) for Chrome extension development
+- [Tailwind CSS v4](https://tailwindcss.com/) for styling
+- [Radix UI](https://www.radix-ui.com/) for accessible primitives
+- [Lucide React](https://lucide.dev/) for icons
+- [shadcn/ui](https://ui.shadcn.com/) component library
 
 ---
 
-<p align="center">Made with ❤️ by Yash Verma</p>
+## Keyboard Shortcuts
+
+| Shortcut | Action | Configurable |
+|----------|--------|--------------|
+| `Cmd+K` / `Ctrl+K` | Focus search bar | Yes |
+| `Ctrl+T` / `Cmd+T` | Open command palette | Yes |
+
+All shortcuts can be enabled or disabled in the Keyboard Shortcuts settings.
+
+---
+
+## Usage
+
+### Managing Tabs
+- Click any tab to switch to it
+- Click the X icon to close a tab
+- Click the pin icon to pin or unpin a tab
+
+### Working with Pinned URLs
+- Click the + button in the pinned URLs grid to add the current URL
+- Click any pinned URL card to open it
+- Click the X icon on a card to remove it
+- Access Settings to adjust grid columns and row height
+
+### Customizing Themes
+- Click the moon icon to open Theme Settings
+- Select a theme from the dropdown menu
+- Click the + button to add a custom theme from tweakcn.com
+- Click the trash icon to delete custom themes
+
+---
+
+## Contributing
+
+We welcome contributions. To get started:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Commit your changes: `git commit -m 'Add your feature'`
+4. Push to the branch: `git push origin feature/your-feature`
+5. Open a Pull Request
+
+### Guidelines
+- Write TypeScript for all new code
+- Follow the existing code style and conventions
+- Add clear comments for complex logic
+- Test thoroughly in Chrome before submitting
+
+---
+
+## License
+
+MIT License — see the [LICENSE](LICENSE) file for details.
+
+---
+
+## Acknowledgments
+
+Built with [shadcn/ui](https://ui.shadcn.com/), [tweakcn.com](https://tweakcn.com), [Lucide](https://lucide.dev/), and [Radix UI](https://www.radix-ui.com/).
+
+---
+
+Made by Yash Verma
