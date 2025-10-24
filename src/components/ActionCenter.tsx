@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Plus, Settings, Moon, Keyboard } from 'lucide-react'
 import { Button } from './ui/button'
 import { ShortcutsSettings, useShortcutSettings } from './ShortcutsSettings'
-import { getModifierKey } from '@/lib/utils'
 
 interface ActionCenterProps {
   onNewTab: () => void
@@ -13,7 +12,6 @@ interface ActionCenterProps {
 export function ActionCenter({ onNewTab, onSettings, onTheme }: ActionCenterProps) {
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const shortcutSettings = useShortcutSettings()
-  const modifierKey = getModifierKey()
 
   return (
     <>
@@ -30,7 +28,7 @@ export function ActionCenter({ onNewTab, onSettings, onTheme }: ActionCenterProp
           </div>
           {shortcutSettings.quickAction && (
             <kbd className="px-1.5 py-0.5 text-xs bg-background/50 border border-border rounded font-mono text-muted-foreground">
-              {modifierKey}+T
+              Ctrl+T
             </kbd>
           )}
         </Button>
