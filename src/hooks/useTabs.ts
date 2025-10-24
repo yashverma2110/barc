@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react'
-import type { TabItem, TabGroup, PinnedUrl } from '../types/tab'
+import type { TabItem, TabGroup, PinnedUrl, GridSettings } from '../types/tab'
+
+const DEFAULT_GRID_SETTINGS: GridSettings = {
+  iconSize: 'medium',
+  columns: 3,
+}
 
 export function useTabs() {
   const [tabs, setTabs] = useState<TabItem[]>([])
   const [pinnedTabIds, setPinnedTabIds] = useState<number[]>([])
   const [customGroups, setCustomGroups] = useState<TabGroup[]>([])
   const [pinnedUrls, setPinnedUrls] = useState<PinnedUrl[]>([])
+  const [gridSettings, setGridSettings] = useState<GridSettings>(DEFAULT_GRID_SETTINGS)
   const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(true)
 
@@ -30,10 +36,10 @@ export function useTabs() {
     }
   }
 
-  // Load stored data (pinned tabs, custom groups, pinned URLs)
+  // Load stored data (pinned tabs, custom groups, pinned URLs, grid settings)
   const loadStoredData = async () => {
     try {
-      const result = await chrome.storage.local.get(['pinnedTabIds', 'customGroups', 'pinnedUrls'])
+      const result = await chrome.storage.local.get(['pinnedTabIds', 'customGroups', 'pinnedUrls', 'gridSettings'])
       if (result.pinnedTabIds) {
         setPinnedTabIds(result.pinnedTabIds)
       }
@@ -42,6 +48,9 @@ export function useTabs() {
       }
       if (result.pinnedUrls) {
         setPinnedUrls(result.pinnedUrls)
+      }
+      if (result.gridSettings) {
+        setGridSettings(result.gridSettings)
       }
     } catch (error) {
       console.error('Error loading stored data:', error)
@@ -125,6 +134,13 @@ export function useTabs() {
   // Add URL to pinned grid
   const addPinnedUrl = async (url: string, title: string, favicon?: string) => {
     try {
+      // Check if URL already exists in pinned URLs
+      const isDuplicate = pinnedUrls.some((pinnedUrl) => pinnedUrl.url === url)
+      if (isDuplicate) {
+        console.warn('URL already pinned:', url)
+        return false
+      }
+
       const newPinnedUrl: PinnedUrl = {
         id: Date.now().toString(),
         url,
@@ -134,8 +150,10 @@ export function useTabs() {
       const newPinnedUrls = [...pinnedUrls, newPinnedUrl]
       setPinnedUrls(newPinnedUrls)
       await chrome.storage.local.set({ pinnedUrls: newPinnedUrls })
+      return true
     } catch (error) {
       console.error('Error adding pinned URL:', error)
+      return false
     }
   }
 
@@ -164,10 +182,13 @@ export function useTabs() {
     try {
       const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true })
       if (activeTab && activeTab.url) {
-        await addPinnedUrl(activeTab.url, activeTab.title || 'Untitled', activeTab.favIconUrl)
+        const success = await addPinnedUrl(activeTab.url, activeTab.title || 'Untitled', activeTab.favIconUrl)
+        return success
       }
+      return false
     } catch (error) {
       console.error('Error pinning current tab:', error)
+      return false
     }
   }
 
@@ -180,6 +201,16 @@ export function useTabs() {
       )
     : tabs
 
+  // Update grid settings
+  const updateGridSettings = async (newSettings: GridSettings) => {
+    try {
+      setGridSettings(newSettings)
+      await chrome.storage.local.set({ gridSettings: newSettings })
+    } catch (error) {
+      console.error('Error updating grid settings:', error)
+    }
+  }
+
   // Separate pinned and unpinned tabs
   const pinnedTabs = filteredTabs.filter((tab) => pinnedTabIds.includes(tab.id))
   const unpinnedTabs = filteredTabs.filter((tab) => !pinnedTabIds.includes(tab.id))
@@ -190,6 +221,7 @@ export function useTabs() {
     unpinnedTabs,
     customGroups,
     pinnedUrls,
+    gridSettings,
     searchQuery,
     loading,
     setSearchQuery,
@@ -201,5 +233,6 @@ export function useTabs() {
     removePinnedUrl,
     openUrl,
     pinCurrentTab,
+    updateGridSettings,
   }
 }

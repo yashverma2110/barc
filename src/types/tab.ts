@@ -24,8 +24,14 @@ export interface PinnedUrl {
   favicon?: string
 }
 
+export interface GridSettings {
+  iconSize: 'small' | 'medium' | 'large'
+  columns: 2 | 3 | 4
+}
+
 export interface StoredData {
   pinnedTabIds: number[]
   customGroups: TabGroup[]
   pinnedUrls: PinnedUrl[]
+  gridSettings: GridSettings
 }
