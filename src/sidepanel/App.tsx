@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTabs } from '../hooks/useTabs'
 import { SearchBar } from '../components/SearchBar'
 import { TabItem } from '../components/TabItem'
@@ -6,6 +6,8 @@ import { PinnedUrlGrid } from '../components/PinnedUrlGrid'
 import { ActionCenter } from '../components/ActionCenter'
 import { Settings } from '../components/Settings'
 import { ThemeSettings } from '../components/ThemeSettings'
+import { CommandPalette } from '../components/CommandPalette'
+import { useShortcutSettings } from '../components/ShortcutsSettings'
 import './App.css'
 
 export default function App() {
@@ -30,6 +32,25 @@ export default function App() {
   const [notification, setNotification] = useState<string | null>(null)
   const [showSettings, setShowSettings] = useState(false)
   const [showThemeSettings, setShowThemeSettings] = useState(false)
+  const [showCommandPalette, setShowCommandPalette] = useState(false)
+  const shortcutSettings = useShortcutSettings()
+
+  // Listen for Alt+T keyboard shortcut
+  useEffect(() => {
+    if (!shortcutSettings.quickAction) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Check for Alt+T (both lowercase and uppercase to handle different browsers)
+      if (e.ctrlKey && (e.key === 't' || e.key === 'T')) {
+        e.preventDefault()
+        console.log('Alt+T pressed, opening command palette')
+        setShowCommandPalette(true)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [shortcutSettings.quickAction])
 
   const handleAddUrl = async () => {
     const success = await pinCurrentTab()
@@ -37,6 +58,23 @@ export default function App() {
       setNotification('This URL is already pinned')
       setTimeout(() => setNotification(null), 2000)
     }
+  }
+
+  const handleCommandSubmit = async (input: string) => {
+    // Check if input is a URL
+    const isUrl = /^(https?:\/\/|www\.)/.test(input) || /^[\w-]+\.[\w-.]+/.test(input)
+
+    let url: string
+    if (isUrl) {
+      // Add protocol if missing
+      url = input.startsWith('http') ? input : `https://${input}`
+    } else {
+      // Use Google search as default search engine
+      url = `https://www.google.com/search?q=${encodeURIComponent(input)}`
+    }
+
+    // Open URL in new tab
+    await chrome.tabs.create({ url, active: true })
   }
 
   if (loading) {
@@ -66,6 +104,12 @@ export default function App() {
       {showThemeSettings && (
         <ThemeSettings onClose={() => setShowThemeSettings(false)} />
       )}
+
+      <CommandPalette
+        open={showCommandPalette}
+        onOpenChange={setShowCommandPalette}
+        onSubmit={handleCommandSubmit}
+      />
 
       <PinnedUrlGrid
         pinnedUrls={pinnedUrls}

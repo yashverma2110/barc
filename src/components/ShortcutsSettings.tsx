@@ -16,6 +16,7 @@ interface ShortcutsSettingsProps {
 
 interface ShortcutSettings {
   searchFocus: boolean
+  quickAction: boolean
 }
 
 const STORAGE_KEY = 'shortcut-settings'
@@ -24,6 +25,7 @@ const SETTINGS_CHANGE_EVENT = 'shortcut-settings-changed'
 export function ShortcutsSettings({ open, onOpenChange }: ShortcutsSettingsProps) {
   const [settings, setSettings] = useState<ShortcutSettings>({
     searchFocus: true,
+    quickAction: true,
   })
 
   // Load settings from localStorage on mount and when modal opens
@@ -80,6 +82,22 @@ export function ShortcutsSettings({ open, onOpenChange }: ShortcutsSettingsProps
               onCheckedChange={(checked) => updateSetting('searchFocus', checked)}
             />
           </div>
+
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1 space-y-1">
+              <Label htmlFor="quick-action" className="text-sm font-medium cursor-pointer">
+                Quick Action
+              </Label>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Press <kbd className="px-1.5 py-0.5 text-xs bg-secondary border border-border rounded font-mono">⌥T</kbd> to open URL or search
+              </p>
+            </div>
+            <Switch
+              id="quick-action"
+              checked={settings.quickAction}
+              onCheckedChange={(checked) => updateSetting('quickAction', checked)}
+            />
+          </div>
         </div>
       </DialogContent>
     </Dialog>
@@ -90,6 +108,7 @@ export function ShortcutsSettings({ open, onOpenChange }: ShortcutsSettingsProps
 export function useShortcutSettings() {
   const [settings, setSettings] = useState<ShortcutSettings>({
     searchFocus: true,
+    quickAction: true,
   })
 
   useEffect(() => {
