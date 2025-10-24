@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { Globe, Pin, PinOff, X, Pencil } from 'lucide-react'
 import type { TabItem as TabItemType } from '../types/tab'
 import { Button } from './ui/button'
@@ -44,7 +45,15 @@ export function TabItem({ tab, isPinned, onSwitch, onClose, onTogglePin, onRenam
 
   return (
     <TooltipProvider>
-      <div
+      <motion.div
+        layout
+        initial={{ opacity: 0, scale: 0.95, y: -10 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, x: -20 }}
+        transition={{
+          duration: 0.2,
+          ease: "easeOut"
+        }}
         className={cn(
           'group relative flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer transition-colors',
           'hover:bg-secondary/80',
@@ -126,7 +135,7 @@ export function TabItem({ tab, isPinned, onSwitch, onClose, onTogglePin, onRenam
             </TooltipContent>
           </Tooltip>
         </div>
-      </div>
+      </motion.div>
 
       <RenameTabDialog
         open={showRenameDialog}

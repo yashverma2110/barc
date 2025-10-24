@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { AnimatePresence } from 'framer-motion'
 import { useTabs } from '../hooks/useTabs'
 import { SearchBar } from '../components/SearchBar'
 import { TabItem } from '../components/TabItem'
@@ -132,19 +133,21 @@ export default function App() {
             <div className="text-xs font-semibold uppercase text-muted-foreground tracking-wider mb-2 px-2">
               Pinned
             </div>
-            <div className="flex flex-col gap-1">
-              {pinnedTabs.map((tab) => (
-                <TabItem
-                  key={tab.id}
-                  tab={tab}
-                  isPinned={true}
-                  onSwitch={switchToTab}
-                  onClose={closeTab}
-                  onTogglePin={togglePin}
-                  onRename={renameTab}
-                />
-              ))}
-            </div>
+            <AnimatePresence mode="popLayout">
+              <div className="flex flex-col gap-1">
+                {pinnedTabs.map((tab) => (
+                  <TabItem
+                    key={tab.id}
+                    tab={tab}
+                    isPinned={true}
+                    onSwitch={switchToTab}
+                    onClose={closeTab}
+                    onTogglePin={togglePin}
+                    onRename={renameTab}
+                  />
+                ))}
+              </div>
+            </AnimatePresence>
           </div>
         )}
 
@@ -152,19 +155,21 @@ export default function App() {
           <div className="text-xs font-semibold uppercase text-muted-foreground tracking-wider mb-2 px-2">
             All Tabs
           </div>
-          <div className="flex flex-col gap-1">
-            {unpinnedTabs.map((tab) => (
-              <TabItem
-                key={tab.id}
-                tab={tab}
-                isPinned={false}
-                onSwitch={switchToTab}
-                onClose={closeTab}
-                onTogglePin={togglePin}
-                onRename={renameTab}
-              />
-            ))}
-          </div>
+          <AnimatePresence mode="popLayout">
+            <div className="flex flex-col gap-1">
+              {unpinnedTabs.map((tab) => (
+                <TabItem
+                  key={tab.id}
+                  tab={tab}
+                  isPinned={false}
+                  onSwitch={switchToTab}
+                  onClose={closeTab}
+                  onTogglePin={togglePin}
+                  onRename={renameTab}
+                />
+              ))}
+            </div>
+          </AnimatePresence>
         </div>
       </div>
 
