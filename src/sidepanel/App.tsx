@@ -23,6 +23,7 @@ export default function App() {
     closeTab,
     createNewTab,
     togglePin,
+    renameTab,
     removePinnedUrl,
     openUrl,
     pinCurrentTab,
@@ -135,6 +136,7 @@ export default function App() {
                 onSwitch={switchToTab}
                 onClose={closeTab}
                 onTogglePin={togglePin}
+                onRename={renameTab}
               />
             ))}
           </div>
@@ -154,6 +156,7 @@ export default function App() {
               onSwitch={switchToTab}
               onClose={closeTab}
               onTogglePin={togglePin}
+              onRename={renameTab}
             />
           ))}
         </div>

@@ -14,6 +14,7 @@ export function useTabs() {
   const [gridSettings, setGridSettings] = useState<GridSettings>(DEFAULT_GRID_SETTINGS)
   const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(true)
+  const [customTabNames, setCustomTabNames] = useState<Record<number, string>>({})
 
   // Load tabs from Chrome API
   const loadTabs = async () => {
@@ -36,10 +37,10 @@ export function useTabs() {
     }
   }
 
-  // Load stored data (pinned tabs, custom groups, pinned URLs, grid settings)
+  // Load stored data (pinned tabs, custom groups, pinned URLs, grid settings, custom tab names)
   const loadStoredData = async () => {
     try {
-      const result = await chrome.storage.local.get(['pinnedTabIds', 'customGroups', 'pinnedUrls', 'gridSettings'])
+      const result = await chrome.storage.local.get(['pinnedTabIds', 'customGroups', 'pinnedUrls', 'gridSettings', 'customTabNames'])
       if (result.pinnedTabIds) {
         setPinnedTabIds(result.pinnedTabIds)
       }
@@ -51,6 +52,9 @@ export function useTabs() {
       }
       if (result.gridSettings) {
         setGridSettings(result.gridSettings)
+      }
+      if (result.customTabNames) {
+        setCustomTabNames(result.customTabNames)
       }
     } catch (error) {
       console.error('Error loading stored data:', error)
@@ -188,6 +192,17 @@ export function useTabs() {
     }
   }
 
+  // Rename a tab (stores custom name in localStorage, doesn't change actual page title)
+  const renameTab = async (tabId: number, newTitle: string) => {
+    try {
+      const updatedCustomNames = { ...customTabNames, [tabId]: newTitle }
+      setCustomTabNames(updatedCustomNames)
+      await chrome.storage.local.set({ customTabNames: updatedCustomNames })
+    } catch (error) {
+      console.error('Error renaming tab:', error)
+    }
+  }
+
   // Add current active tab to pinned URLs
   const pinCurrentTab = async () => {
     try {
@@ -248,9 +263,15 @@ export function useTabs() {
   // Filter out tabs that match pinned URLs
   const tabsExcludingPinnedUrls = filteredTabs.filter((tab) => !pinnedUrlStrings.has(normalizeUrl(tab.url)))
 
+  // Apply custom names to tabs
+  const tabsWithCustomNames = tabsExcludingPinnedUrls.map(tab => ({
+    ...tab,
+    title: customTabNames[tab.id] || tab.title
+  }))
+
   // Separate pinned and unpinned tabs (excluding those matching pinned URLs)
-  const pinnedTabs = tabsExcludingPinnedUrls.filter((tab) => pinnedTabIds.includes(tab.id))
-  const unpinnedTabs = tabsExcludingPinnedUrls.filter((tab) => !pinnedTabIds.includes(tab.id))
+  const pinnedTabs = tabsWithCustomNames.filter((tab) => pinnedTabIds.includes(tab.id))
+  const unpinnedTabs = tabsWithCustomNames.filter((tab) => !pinnedTabIds.includes(tab.id))
 
   return {
     tabs: filteredTabs,
@@ -266,6 +287,7 @@ export function useTabs() {
     closeTab,
     createNewTab,
     togglePin,
+    renameTab,
     addPinnedUrl,
     removePinnedUrl,
     openUrl,

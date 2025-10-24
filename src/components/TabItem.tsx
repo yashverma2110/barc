@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { Globe, Pin, PinOff, X } from 'lucide-react'
+import { Globe, Pin, PinOff, X, Pencil } from 'lucide-react'
 import type { TabItem as TabItemType } from '../types/tab'
 import { Button } from './ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip'
+import { RenameTabDialog } from './RenameTabDialog'
 import { cn } from '@/lib/utils'
 
 interface TabItemProps {
@@ -11,10 +12,12 @@ interface TabItemProps {
   onSwitch: (tabId: number) => void
   onClose: (tabId: number) => void
   onTogglePin: (tabId: number) => void
+  onRename: (tabId: number, newTitle: string) => void
 }
 
-export function TabItem({ tab, isPinned, onSwitch, onClose, onTogglePin }: TabItemProps) {
+export function TabItem({ tab, isPinned, onSwitch, onClose, onTogglePin, onRename }: TabItemProps) {
   const [faviconError, setFaviconError] = React.useState(false)
+  const [showRenameDialog, setShowRenameDialog] = React.useState(false)
 
   const handleClick = () => {
     onSwitch(tab.id)
@@ -30,11 +33,20 @@ export function TabItem({ tab, isPinned, onSwitch, onClose, onTogglePin }: TabIt
     onTogglePin(tab.id)
   }
 
+  const handleRenameClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setShowRenameDialog(true)
+  }
+
+  const handleRename = (newTitle: string) => {
+    onRename(tab.id, newTitle)
+  }
+
   return (
     <TooltipProvider>
       <div
         className={cn(
-          'group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer transition-colors',
+          'group relative flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer transition-colors',
           'hover:bg-secondary/80',
           tab.active && 'bg-secondary'
         )}
@@ -64,7 +76,24 @@ export function TabItem({ tab, isPinned, onSwitch, onClose, onTogglePin }: TabIt
           </TooltipContent>
         </Tooltip>
 
-        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        {/* Buttons overlay with gradient background */}
+        <div className="absolute right-0 top-0 bottom-0 flex items-center gap-1 pr-2 pl-8 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-l from-secondary via-secondary to-transparent">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6"
+                onClick={handleRenameClick}
+              >
+                <Pencil size={14} className="text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>Rename tab</p>
+            </TooltipContent>
+          </Tooltip>
+
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -98,6 +127,13 @@ export function TabItem({ tab, isPinned, onSwitch, onClose, onTogglePin }: TabIt
           </Tooltip>
         </div>
       </div>
+
+      <RenameTabDialog
+        open={showRenameDialog}
+        onOpenChange={setShowRenameDialog}
+        currentTitle={tab.title}
+        onRename={handleRename}
+      />
     </TooltipProvider>
   )
 }
